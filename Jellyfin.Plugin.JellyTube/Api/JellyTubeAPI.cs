@@ -1,8 +1,10 @@
+using Jellyfin.Plugin.JellyTube.Configuration;
 using MediaBrowser.Controller.Configuration;
+using MediaBrowser.Controller.Library;
 using Microsoft.AspNetCore.Mvc;
+using MediaBrowser.Model.IO;
 using System.Diagnostics;
 using System;
-using Jellyfin.Plugin.JellyTube.Configuration;
 
 namespace Jellyfin.Plugin.JellyTube.Api;
 
@@ -11,6 +13,23 @@ namespace Jellyfin.Plugin.JellyTube.Api;
 [Route("jellytube")]
 public class JellyTubeActivityController : ControllerBase
 {
+    private readonly IFileSystem _fileSystem;
+    private readonly IServerConfigurationManager _config;
+    private readonly IUserManager _userManager;
+    private readonly ILibraryManager _libraryManager;
+
+    public JellyTubeActivityController(
+        IFileSystem fileSystem,
+        IServerConfigurationManager config,
+        IUserManager userManager,
+        ILibraryManager libraryManager)
+    {
+        _fileSystem = fileSystem;
+        _config = config;
+        _userManager = userManager;
+        _libraryManager = libraryManager;
+    }
+    
     public class JellyTubeData
     {
         public string VideoId { get; set; } = "";
@@ -21,10 +40,13 @@ public class JellyTubeActivityController : ControllerBase
     }
     
     [HttpGet("test")]
-    public string JellyTubeTest()
+    public IActionResult JellyTubeTest()
     {
-        
-        return "this works!!!";
+        PluginConfiguration? config = Plugin.Instance.Configuration;
+        string responseText = $"this works!!!\n{config.DefaultDownloadFolder}\n{config.UseDefaultPath}";
+
+        // Return the response as plain text
+        return Content(responseText, "text/plain");
     }
     
     [HttpPost("submit_dl")]

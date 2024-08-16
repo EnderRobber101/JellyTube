@@ -75,8 +75,8 @@
                         // document.querySelector('#AnInteger').value = config.AnInteger;
                         // document.querySelector('#TrueFalseSetting').checked = config.TrueFalseSetting;
                         // document.querySelector('#AString').value = config.AString;
-                        document.querySelector('#UseDefaultPath').checked = config.TrueFalseSetting;
-                        document.querySelector('#DefaultDownloadFolder').value = config.AString;
+                        document.querySelector('#UseDefaultPath').checked = config.UseDefaultPath;
+                        document.querySelector('#DefaultDownloadFolder').value = config.DefaultDownloadFolder;
                         Dashboard.hideLoadingMsg();
                     });
                 });
@@ -89,8 +89,8 @@
                     // config.AnInteger = document.querySelector('#AnInteger').value;
                     // config.TrueFalseSetting = document.querySelector('#TrueFalseSetting').checked;
                     // config.AString = document.querySelector('#AString').value;
-                    config.TrueFalseSetting = document.querySelector('#UseDefaultPath').checked;
-                    config.AString = document.querySelector('#DefaultDownloadFolder').value;
+                    config.UseDefaultPath = document.querySelector('#UseDefaultPath').checked;
+                    config.DefaultDownloadFolder = document.querySelector('#DefaultDownloadFolder').value;
                     ApiClient.updatePluginConfiguration(JellyTubeConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });

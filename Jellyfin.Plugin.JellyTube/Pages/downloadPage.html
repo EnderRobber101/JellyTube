@@ -1,8 +1,8 @@
-<div data-role="page" class="page type-interior pluginConfigurationPage"
+<div id="JellyTubeDownloadPage"data-role="page" class="page type-interior pluginConfigurationPage"
 	 data-require="emby-button,emby-select,emby-checkbox">
 	<div data-role="content">
 		<div class="content-primary">
-			<h2>JellyTube Download</h2>
+			<h2>JellyTube Video Download</h2>
 			<span>Make sure to configure yt-dlp(JellyTube Settings) first.</span>
 			<div class="content-primary">
                 <!-- Change the preview image -->
@@ -66,21 +66,21 @@
                     
                 </form>
                 <script type="text/javascript">
-                    //Api stuff 
-                    /*
-                    window.ApiClient.sendCustomQuery = function (url_to_get, query_data) {
-						var post_data = JSON.stringify(query_data);
-						console.log("sendCustomQuery url  = " + url_to_get);
-						console.log("sendCustomQuery data = " + post_data);
-						return this.ajax({
-							type: "POST",
-							url: url_to_get,
-							dataType: "json",
-							data: post_data,
-							contentType: 'application/json'
-						});
-					};
-                    */
+                    //on load
+                    var JellyTubeConfig = {
+                        pluginUniqueId: 'c1c9845d-ba96-4d3d-905c-dade59a33eda'
+                    };
+                    document.querySelector('#JellyTubeDownloadPage')
+                        .addEventListener('pageshow', function() {
+                            Dashboard.showLoadingMsg();
+                            ApiClient.getPluginConfiguration(JellyTubeConfig.pluginUniqueId).then(function (config) {
+                                if(config.UseDefaultPath) {
+                                    document.getElementById('JellyTube-FolderPath').value = config.DefaultDownloadFolder;
+                                }
+                                Dashboard.hideLoadingMsg();
+                            });
+                        });
+                    
                    
                    //Changes given link/id to only return id
                    function parseYT(linkorid) {
@@ -166,7 +166,6 @@
                                 "M4A":                  document.getElementById("JellyTube-M4A").checked
 							}
 						
-
 						let url = "jellytube/submit_dl";
 						url = window.ApiClient.getUrl(url);
 						// window.ApiClient.sendCustomQuery(url, payload).then(function(result) {
