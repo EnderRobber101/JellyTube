@@ -1,0 +1,230 @@
+<div data-role="page" class="page type-interior pluginConfigurationPage"
+	 data-require="emby-button,emby-select,emby-checkbox">
+	<div data-role="content">
+		<div class="content-primary">
+			<h2>JellyTube Download</h2>
+			<span>Make sure to configure yt-dlp(JellyTube Settings) first.</span>
+			<div class="content-primary">
+                <!-- Change the preview image -->
+				<!-- <img id="preview" src="https://img.youtube.com/vi/failed/0.jpg" width="auto" height="auto"> -->
+                <div class="image-container">
+                    <img id="preview" src="https://img.youtube.com/vi/failed/0.jpg" width="auto" height="auto">
+                </div>
+                
+				<form id="JellyTubeDLForm">
+
+					<div class="inputContainer">
+						<label class="inputLabel">YouTube Link or ID</label>
+						<input id="JellyTube-VideoID" class="emby-input" name="JellyTube-VideoID" value="" />
+					</div>
+                    
+					<div class="selectContainer">
+						<label class="inputLabel" for="JellyTube-FolderPath">Target Folder</label>
+						<input id="JellyTube-FolderPath" class="emby-input" name="JellyTube-FolderPath" placeholder="/media"/>
+						<div class="fieldDescription">Your Media file will be stored here assuming JellyFin has Write Permissions, this will also recursively create the folder(s) required</div>
+					</div>
+
+					<div class="checkboxContainer checkboxContainer-withDescription">
+						<label class="emby-checkbox-label">
+							<input id="JellyTube-FreeFormat" name="JellyTube-FreeFormat" type="checkbox" is="emby-checkbox" data-embycheckbox="true" class="emby-checkbox">
+							<span class="checkboxLabel">Free Format</span>
+						<span class="checkboxOutline"><span class="material-icons checkboxIcon checkboxIcon-checked check" aria-hidden="true"></span><span class="material-icons checkboxIcon checkboxIcon-unchecked " aria-hidden="true"></span></span></label>
+						<div class="fieldDescription">Check this if you want to download free format(likely webm)</div>
+					</div>
+
+					<div id="JellyTube-VideoSettings">
+						<div class="selectContainer">
+							<label class="inputLabel" for="JellyTube-VideoResolution">Video resolution</label>
+							<select id="JellyTube-VideoResolution" class="emby-input" name="JellyTube-VideoResolution">
+                                <option value="audio">audio only</option>
+								<option value="min" selected>Min resolution</option>
+                                <option value="144">144p</option>
+								<option value="240">240p</option>
+								<option value="360">360p</option>
+								<option value="480">480p</option>
+								<option value="720">720p</option>
+								<option value="1080">1080p</option>
+								<option value="1440">2k</option>
+								<option value="2160">4k</option>
+                                <option value="max">Max resolution</option>
+							</select>
+							<div class="fieldDescription">Maximum desired resolution if available. Set to default if you want to download the best available.</div>
+						</div>
+					</div>
+                    <div id="JellyTube-AudioSettings" hidden> 
+                        <label class="emby-checkbox-label">
+							<input id="JellyTube-M4A" name="JellyTube-M4A" type="checkbox" is="emby-checkbox" data-embycheckbox="true" class="emby-checkbox">
+							<span class="checkboxLabel">Download as M4A</span>
+						<span class="checkboxOutline"><span class="material-icons checkboxIcon checkboxIcon-checked check" aria-hidden="true"></span><span class="material-icons checkboxIcon checkboxIcon-unchecked " aria-hidden="true"></span></span></label>
+						<div class="fieldDescription">Check this if you want to download as M4A, or it will be in mp4</div>
+                    </div>
+					<button id="JellyTube-Submit" is="emby-button" type="submit" class="raised button-submit block emby-button">
+						<span>Submit</span>
+					</button>
+
+					<div id="JellyTube-Result"></div>
+                    
+                </form>
+                <script type="text/javascript">
+                    //Api stuff 
+                    /*
+                    window.ApiClient.sendCustomQuery = function (url_to_get, query_data) {
+						var post_data = JSON.stringify(query_data);
+						console.log("sendCustomQuery url  = " + url_to_get);
+						console.log("sendCustomQuery data = " + post_data);
+						return this.ajax({
+							type: "POST",
+							url: url_to_get,
+							dataType: "json",
+							data: post_data,
+							contentType: 'application/json'
+						});
+					};
+                    */
+                   
+                   //Changes given link/id to only return id
+                   function parseYT(linkorid) {
+                       let id;
+                       if (linkorid.startsWith("http")) {
+                           const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+                           const match = linkorid.match(regex);
+                           // If the match is found, return the video ID
+                           if (match && match[1]) {
+                               return match[1];
+                            }
+                            return null;
+						}
+						else { id = linkorid; }
+						return id;
+					}
+                    
+                    //Get elements
+					function getJellyTubeValueByID(id) {
+                        return document.getElementById(id).value;
+					}
+                    
+                    //! Add non double click
+					// document.getElementById('preview').onload = function(e) {
+                        // 	let submitbtn = document.getElementById('JellyTube-Submit');
+                        // 	if(this.width == 120)
+                        // 		submitbtn.setAttribute('disabled', true);
+                        // 	else
+                        // 		submitbtn.removeAttribute('disabled');
+                        // }
+                        
+                        //On change
+                        //video image preview
+                        document.getElementById('JellyTube-VideoID') 
+						.addEventListener("change", function() {
+                            let id = parseYT(this.value);
+                            let formats = ["default.jpg", "mqdefault.jpg", "hqdefault.jpg", "sddefault.jpg", "maxresdefault.jpg"]
+							document.getElementById('preview').src = "https://img.youtube.com/vi/" + id + "/" + formats[formats.length-1];
+                            document.getElementById('preview').width = "";
+                            document.getElementById('preview').height = "";
+						});
+                        
+                        document.getElementById('JellyTube-VideoResolution')
+                        .addEventListener("change", function() {
+                            let selectedOption = this.value;
+                            document.getElementById('JellyTube-AudioSettings').hidden = (selectedOption !== "audio");
+                        });
+                        
+                        window.ApiClient.sendCustomQuery = function (url_to_get, query_data) {
+                            var post_data = JSON.stringify(query_data);
+                            // console.log("sendCustomQuery url  = " + url_to_get);
+                            // console.log("sendCustomQuery data = " + post_data);
+                            return this.ajax({
+                                type: "POST",
+                                url: url_to_get,
+                                dataType: "json",
+                                data: post_data,
+                                contentType: 'application/json'
+                            }).then(function (response) {
+                                // Handle the response assuming it's a string (not JSON)
+                                // console.log("tag123 response = " + response);
+                                return response; // Return the string response
+                            }).catch(function (error) {
+                                // Handle any errors (optional)
+                                console.error("Error:", error);
+                                throw error;
+                            });
+                        };
+                        
+                        
+                        
+                    //On submit
+					document.querySelector('#JellyTubeDLForm')
+                		.addEventListener('submit', function(e) {
+							e.preventDefault();
+
+							document.getElementById('JellyTube-Result').innerHTML = "<span>Loading<span>";
+							let payload = {
+								"VideoId": 				parseYT(getJellyTubeValueByID("JellyTube-VideoID")),
+								"DownloadFolder": 		getJellyTubeValueByID("JellyTube-FolderPath"),
+								"VideoResolution":		getJellyTubeValueByID("JellyTube-VideoResolution"),
+								"FreeFormat": 	        document.getElementById("JellyTube-FreeFormat").checked,
+                                "M4A":                  document.getElementById("JellyTube-M4A").checked
+							}
+						
+
+						let url = "jellytube/submit_dl";
+						url = window.ApiClient.getUrl(url);
+						// window.ApiClient.sendCustomQuery(url, payload).then(function(result) {
+						// 	var message = result["message"];
+						// 	document.getElementById('jellytube-result').innerHTML = message;
+						// });
+                        window.ApiClient.sendCustomQuery(url, payload).then(function (result) {
+                            console.log(result)
+                            // Since the backend returns a string, simply display it
+                            document.getElementById('JellyTube-Result').innerHTML = result;
+                        }).catch(function (error) {
+                            document.getElementById('JellyTube-Result').innerHTML = `<span style="color:red;">Error: ${error.message}</span>`;
+                        });
+					});
+
+					// window.ApiClient.getLibraries = function() {
+					// 	const url = window.ApiClient.getUrl("jellytube/libraries");
+					// 	return this.ajax({
+					// 		type: "GET",
+					// 		url: url,
+					// 		dataType: "json",
+					// 		contentType: 'application/json'
+					// 	});
+					// };
+
+					// (function() {
+					// 	window.ApiClient.getLibraries().then(function(result) {
+					// 		let librariesHtml = ""
+					// 		for (let library of result.data) {
+					// 			for (let location of library) {
+					// 				librariesHtml += '<option value="' + location + '">' + location + '</option>'
+					// 			}
+					// 		}
+					// 		document.getElementById('jellytube-targetlibrary').innerHTML = librariesHtml;
+					// 	});
+					// })();
+                </script>
+                <style>
+                    /* Container to control the image layout */
+                    .image-container {
+                      display: flex;
+                      justify-content: flex-start; /* Aligns the image to the left */
+                      align-items: center;
+                      max-width: 100%; /* Ensure it doesn’t exceed the screen width */
+                      max-height: 100vh; /* Ensure it doesn’t exceed the viewport height */
+                      overflow: hidden; /* Prevent overflow */
+                      margin-bottom: 16px; /* Add some space below the image */
+                    }
+                  
+                    /* Make the image responsive */
+                    #preview {
+                      max-width: 100%;
+                      max-height: 100%;
+                      width: auto;
+                      height: auto;
+                    }
+                  </style>
+			</div>
+        </div>
+    </div> 
+</div>
