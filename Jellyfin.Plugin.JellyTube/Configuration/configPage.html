@@ -54,6 +54,13 @@
                     </div>
                     
                     
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="YouTubeAPIKey">YouTube Data Api Key</label>
+                        <input id="YouTubeAPIKey" name="YouTubeAPIKey" type="text" is="emby-input" />
+                        <div class="fieldDescription">If you want to use the download playlist feature, you will need to get a YouTube Data API Key. You can follow <a href="https://developers.google.com/youtube/v3/getting-started">this tutorial</a> to get it.</div>
+                    </div>
+                    
+                    
                     <div>
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button">
                             <span>Save</span>
@@ -75,8 +82,9 @@
                         // document.querySelector('#AnInteger').value = config.AnInteger;
                         // document.querySelector('#TrueFalseSetting').checked = config.TrueFalseSetting;
                         // document.querySelector('#AString').value = config.AString;
-                        document.querySelector('#UseDefaultPath').checked = config.UseDefaultPath;
                         document.querySelector('#DefaultDownloadFolder').value = config.DefaultDownloadFolder;
+                        document.querySelector('#UseDefaultPath').checked = config.UseDefaultPath;
+                        document.querySelector('#YouTubeAPIKey').value = config.YouTubeAPIKey;
                         Dashboard.hideLoadingMsg();
                     });
                 });
@@ -89,8 +97,11 @@
                     // config.AnInteger = document.querySelector('#AnInteger').value;
                     // config.TrueFalseSetting = document.querySelector('#TrueFalseSetting').checked;
                     // config.AString = document.querySelector('#AString').value;
-                    config.UseDefaultPath = document.querySelector('#UseDefaultPath').checked;
                     config.DefaultDownloadFolder = document.querySelector('#DefaultDownloadFolder').value;
+                    config.UseDefaultPath = document.querySelector('#UseDefaultPath').checked;
+                    config.YouTubeAPIKey = document.querySelector('#YouTubeAPIKey').value;
+                    
+                    
                     ApiClient.updatePluginConfiguration(JellyTubeConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     });

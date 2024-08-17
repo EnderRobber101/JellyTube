@@ -48,8 +48,14 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
             },
             new PluginPageInfo
             {
-                Name = "JellyTube-DownloadPage",
-                EmbeddedResourcePath = string.Format(CultureInfo.InvariantCulture, "{0}.Pages.downloadPage.html", GetType().Namespace),
+                Name = "JellyTube-VideoDownloadPage",
+                EmbeddedResourcePath = string.Format(CultureInfo.InvariantCulture, "{0}.Pages.videoDownloadPage.html", GetType().Namespace),
+                EnableInMainMenu = true
+            },
+            new PluginPageInfo
+            {
+                Name = "JellyTube-PlaylistDownloadPage",
+                EmbeddedResourcePath = string.Format(CultureInfo.InvariantCulture, "{0}.Pages.playlistDownload.html", GetType().Namespace),
                 EnableInMainMenu = true
             }
         };

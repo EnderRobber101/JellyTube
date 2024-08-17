@@ -57,8 +57,10 @@ public class PluginConfiguration : BasePluginConfiguration
     {
         DefaultDownloadFolder = "/media";
         UseDefaultPath = false;
+        YouTubeAPIKey = "Not Set";
     }
     public string DefaultDownloadFolder { get; set; }
     public bool UseDefaultPath { get; set; }
     
+    public string YouTubeAPIKey { get; set; }
 }

@@ -1,4 +1,4 @@
-<div id="JellyTubeDownloadPage"data-role="page" class="page type-interior pluginConfigurationPage"
+<div id="JellyTubeVideoDownloadPage"data-role="page" class="page type-interior pluginConfigurationPage"
 	 data-require="emby-button,emby-select,emby-checkbox">
 	<div data-role="content">
 		<div class="content-primary">
@@ -70,7 +70,7 @@
                     var JellyTubeConfig = {
                         pluginUniqueId: 'c1c9845d-ba96-4d3d-905c-dade59a33eda'
                     };
-                    document.querySelector('#JellyTubeDownloadPage')
+                    document.querySelector('#JellyTubeVideoDownloadPage')
                         .addEventListener('pageshow', function() {
                             Dashboard.showLoadingMsg();
                             ApiClient.getPluginConfiguration(JellyTubeConfig.pluginUniqueId).then(function (config) {
