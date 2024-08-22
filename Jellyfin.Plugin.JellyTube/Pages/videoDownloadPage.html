@@ -23,7 +23,7 @@
 						<input id="JellyTube-FolderPath" class="emby-input" name="JellyTube-FolderPath" placeholder="/media"/>
 						<div class="fieldDescription">Your Media file will be stored here assuming JellyFin has Write Permissions, this will also recursively create the folder(s) required</div>
 					</div>
-
+                    <!--
 					<div class="checkboxContainer checkboxContainer-withDescription">
 						<label class="emby-checkbox-label">
 							<input id="JellyTube-FreeFormat" name="JellyTube-FreeFormat" type="checkbox" is="emby-checkbox" data-embycheckbox="true" class="emby-checkbox">
@@ -31,7 +31,7 @@
 						<span class="checkboxOutline"><span class="material-icons checkboxIcon checkboxIcon-checked check" aria-hidden="true"></span><span class="material-icons checkboxIcon checkboxIcon-unchecked " aria-hidden="true"></span></span></label>
 						<div class="fieldDescription">Check this if you want to download free format(likely webm)</div>
 					</div>
-
+                    -->
 					<div id="JellyTube-VideoSettings">
 						<div class="selectContainer">
 							<label class="inputLabel" for="JellyTube-VideoResolution">Video resolution</label>
@@ -162,7 +162,7 @@
 								"VideoId": 				parseYT(getJellyTubeValueByID("JellyTube-VideoID")),
 								"DownloadFolder": 		getJellyTubeValueByID("JellyTube-FolderPath"),
 								"VideoResolution":		getJellyTubeValueByID("JellyTube-VideoResolution"),
-								"FreeFormat": 	        document.getElementById("JellyTube-FreeFormat").checked,
+								// "FreeFormat": 	        document.getElementById("JellyTube-FreeFormat").checked,
                                 "M4A":                  document.getElementById("JellyTube-M4A").checked
 							}
 						

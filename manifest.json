@@ -1,0 +1,20 @@
+[
+    {
+        "category": "General",
+        "guid": "c1c9845d-ba96-4d3d-905c-dade59a33eda",
+        "name": "JellyTube",
+        "description": "It is similar to FinTube but with more features and universal support(docker linux, macos, windows, ect).",
+        "owner": "EnderRobber101",
+        "overview": "Download YouTube videos and playlists",
+        "versions": [
+            {
+                "checksum": "5f3cd8a45312b07804cfbfdfe0db3eff",
+                "changelog": "Initial release",
+                "targetAbi": "10.9.0.0",
+                "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/Initial/JellyTube.zip",
+                "timestamp": "2024-08-22 10:24:58",
+                "version": "1.0.0.0"
+            }
+        ]
+    }
+]

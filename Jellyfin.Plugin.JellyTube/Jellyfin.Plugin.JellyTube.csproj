@@ -3,15 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Jellyfin.Plugin.JellyTube</RootNamespace>
-    <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
-    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
     <Nullable>enable</Nullable>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <!-- <CodeAnalysisRuleSet>../jellyfin.ruleset</CodeAnalysisRuleSet> -->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.68.0.3421" />
     <PackageReference Include="Jellyfin.Controller" Version="10.9.9" />
     <PackageReference Include="Jellyfin.Model" Version="10.9.9" />
   </ItemGroup>
@@ -24,5 +20,10 @@
     <None Remove="Pages\playlistDownload.html" />
     <EmbeddedResource Include="Pages\playlistDownload.html" />
   </ItemGroup>
-
+  
+  <Target Name="PreparePlugin" AfterTargets="Build">
+    <Copy SourceFiles="..\Assets\logo.jpg" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\Assets\meta.json" DestinationFolder="$(OutDir)" />
+  </Target>
+  
 </Project>

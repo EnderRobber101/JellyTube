@@ -53,13 +53,19 @@
                         </label>
                     </div>
                     
-                    
+                    <!--
                     <div class="inputContainer">
                         <label class="inputLabel inputLabelUnfocused" for="YouTubeAPIKey">YouTube Data Api Key</label>
                         <input id="YouTubeAPIKey" name="YouTubeAPIKey" type="text" is="emby-input" />
                         <div class="fieldDescription">If you want to use the download playlist feature, you will need to get a YouTube Data API Key. You can follow <a href="https://developers.google.com/youtube/v3/getting-started">this tutorial</a> to get it.</div>
                     </div>
+                    -->
                     
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="ConfigFolder">Config Folder Directory (need for playlist)</label>
+                        <input id="ConfigFolder" name="ConfigFolder" type="text" is="emby-input" />
+                        <div class="fieldDescription">To use the playlist generation feature, you need to set a config folder.</div>
+                    </div>
                     
                     <div>
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button">
@@ -84,7 +90,8 @@
                         // document.querySelector('#AString').value = config.AString;
                         document.querySelector('#DefaultDownloadFolder').value = config.DefaultDownloadFolder;
                         document.querySelector('#UseDefaultPath').checked = config.UseDefaultPath;
-                        document.querySelector('#YouTubeAPIKey').value = config.YouTubeAPIKey;
+                        //document.querySelector('#YouTubeAPIKey').value = config.YouTubeAPIKey;
+                        document.querySelector('#ConfigFolder').value = config.ConfigFolder;
                         Dashboard.hideLoadingMsg();
                     });
                 });
@@ -99,8 +106,8 @@
                     // config.AString = document.querySelector('#AString').value;
                     config.DefaultDownloadFolder = document.querySelector('#DefaultDownloadFolder').value;
                     config.UseDefaultPath = document.querySelector('#UseDefaultPath').checked;
-                    config.YouTubeAPIKey = document.querySelector('#YouTubeAPIKey').value;
-                    
+                    //config.YouTubeAPIKey = document.querySelector('#YouTubeAPIKey').value;
+                    config.ConfigFolder = document.querySelector('#ConfigFolder').value;
                     
                     ApiClient.updatePluginConfiguration(JellyTubeConfig.pluginUniqueId, config).then(function (result) {
                         Dashboard.processPluginConfigurationUpdateResult(result);

@@ -1,0 +1,15 @@
+{
+    "category": "General",
+    "changelog": "Initial",
+    "description": "",
+    "guid": "c1c9845d-ba96-4d3d-905c-dade59a33eda",
+    "name": "JellyTube",
+    "overview": "Add videos from YouTube",
+    "owner": "EnderRobber101",
+    "targetAbi": "10.9.0.0",
+    "timestamp": "2024-08-22T10:30:28.0000000Z",
+    "version": "1.0.1.0",
+    "status": "Active",
+    "autoUpdate": false,
+    "imagePath": "/config/plugins/JellyTube/logo.png"
+  }

@@ -1,0 +1,184 @@
+<div id="JellyTubePlaylistDownloadPage"data-role="page" class="page type-interior pluginConfigurationPage"
+	 data-require="emby-button,emby-select,emby-checkbox">
+	<div data-role="content">
+		<div class="content-primary">
+			<h2>JellyTube Playlist Download</h2>
+			<div class="content-primary">
+				<form id="JellyTubeDLForm">
+
+					<div class="inputContainer">
+						<label class="inputLabel">YouTube Playlist Link or ID</label>
+						<input id="JellyTube-PlaylistID" class="emby-input" name="JellyTube-PlaylistID" value="" />
+					</div>
+                    
+					<div class="selectContainer">
+						<label class="inputLabel" for="JellyTube-FolderPath">Target Folder</label>
+						<input id="JellyTube-FolderPath" class="emby-input" name="JellyTube-FolderPath" placeholder="/media"/>
+						<div class="fieldDescription">Your Media file will be stored here assuming JellyFin has Write Permissions, this will also recursively create the folder(s) required</div>
+					</div>
+                    <!--
+					<div class="checkboxContainer checkboxContainer-withDescription">
+						<label class="emby-checkbox-label">
+							<input id="JellyTube-FreeFormat" name="JellyTube-FreeFormat" type="checkbox" is="emby-checkbox" data-embycheckbox="true" class="emby-checkbox">
+							<span class="checkboxLabel">Free Format</span>
+						<span class="checkboxOutline"><span class="material-icons checkboxIcon checkboxIcon-checked check" aria-hidden="true"></span><span class="material-icons checkboxIcon checkboxIcon-unchecked " aria-hidden="true"></span></span></label>
+						<div class="fieldDescription">Check this if you want to download free format(likely webm)</div>
+					</div>
+                    -->
+					<div id="JellyTube-VideoSettings">
+						<div class="selectContainer">
+							<label class="inputLabel" for="JellyTube-VideoResolution">Video resolution</label>
+							<select id="JellyTube-VideoResolution" class="emby-input" name="JellyTube-VideoResolution">
+                                <option value="audio">audio only</option>
+								<option value="min" selected>Min resolution</option>
+                                <option value="144">144p</option>
+								<option value="240">240p</option>
+								<option value="360">360p</option>
+								<option value="480">480p</option>
+								<option value="720">720p</option>
+								<option value="1080">1080p</option>
+								<option value="1440">2k</option>
+								<option value="2160">4k</option>
+                                <option value="max">Max resolution</option>
+							</select>
+							<div class="fieldDescription">Maximum desired resolution if available. Set to default if you want to download the best available.</div>
+						</div>
+					</div>
+                    <div id="JellyTube-AudioSettings" hidden> 
+                        <label class="emby-checkbox-label">
+							<input id="JellyTube-M4A" name="JellyTube-M4A" type="checkbox" is="emby-checkbox" data-embycheckbox="true" class="emby-checkbox">
+							<span class="checkboxLabel">Download as M4A</span>
+						<span class="checkboxOutline"><span class="material-icons checkboxIcon checkboxIcon-checked check" aria-hidden="true"></span><span class="material-icons checkboxIcon checkboxIcon-unchecked " aria-hidden="true"></span></span></label>
+						<div class="fieldDescription">Check this if you want to download as M4A, or it will be in mp4</div>
+                    </div>
+                    
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="JellyTube-MaxDownloadCount">Maximum number of downloads from playlist</label>
+                        <input id="JellyTube-MaxDownloadCount" name="JellyTube-MaxDownloadCount" type="number" is="emby-input" min="0" value="0"/>
+                        <div class="fieldDescription">Keep this at zero if you don't want to limit the number of downloads</div>
+                    </div>
+                    
+					<button id="JellyTube-Submit" is="emby-button" type="submit" class="raised button-submit block emby-button">
+						<span>Submit</span>
+					</button>
+
+					<div id="JellyTube-Result"></div>
+                    
+                </form>
+                <script type="text/javascript">
+                    //on load
+                    var JellyTubeConfig = {
+                        pluginUniqueId: 'c1c9845d-ba96-4d3d-905c-dade59a33eda'
+                    };
+                    document.querySelector('#JellyTubePlaylistDownloadPage')
+                        .addEventListener('pageshow', function() {
+                            Dashboard.showLoadingMsg();
+                            ApiClient.getPluginConfiguration(JellyTubeConfig.pluginUniqueId).then(function (config) {
+                                if(config.UseDefaultPath) {
+                                    document.getElementById('JellyTube-FolderPath').value = config.DefaultDownloadFolder;
+                                }
+                                Dashboard.hideLoadingMsg();
+                            });
+                        });
+                    
+                   
+                    //Changes given link/id to only return id
+                    function parseYT(linkorid) {
+                        let id;
+                        if (linkorid.startsWith("http")) {
+                            // Regex to handle both video and playlist links
+                            const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?.*?list=|playlist\?list=|.*?\/.*?list=|.*?\/list=)([a-zA-Z0-9_-]+)/;
+                            const match = linkorid.match(regex);
+                            // If the match is found, return the playlist ID
+                            if (match && match[1]) { return match[1]; }
+                            // If no playlist ID is found, check for video ID as a fallback
+                            const videoRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|e\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+                            const videoMatch = linkorid.match(videoRegex);
+                            if (videoMatch && videoMatch[1]) { return videoMatch[1]; }
+                            return null;
+                        } 
+                        else { id = linkorid; }
+                        return id;
+                    }
+                    
+                    //Get elements
+					function getJellyTubeValueByID(id) {
+                        return document.getElementById(id).value;
+					}
+                    
+                    //! Add non double click
+					// document.getElementById('preview').onload = function(e) {
+                        // 	let submitbtn = document.getElementById('JellyTube-Submit');
+                        // 	if(this.width == 120)
+                        // 		submitbtn.setAttribute('disabled', true);
+                        // 	else
+                        // 		submitbtn.removeAttribute('disabled');
+                        // }
+                        
+                        //On change
+                        document.getElementById('JellyTube-VideoResolution')
+                            .addEventListener("change", function() {
+                                let selectedOption = this.value;
+                                document.getElementById('JellyTube-AudioSettings').hidden = (selectedOption !== "audio");
+                            });
+                        
+                        window.ApiClient.sendCustomQuery = function (url_to_get, query_data) {
+                            var post_data = JSON.stringify(query_data);
+                            // console.log("sendCustomQuery url  = " + url_to_get);
+                            // console.log("sendCustomQuery data = " + post_data);
+                            return this.ajax({
+                                type: "POST",
+                                url: url_to_get,
+                                dataType: "json",
+                                data: post_data,
+                                contentType: 'application/json'
+                            }).then(function (response) {
+                                // Handle the response assuming it's a string (not JSON)
+                                // console.log("tag123 response = " + response);
+                                return response; // Return the string response
+                            }).catch(function (error) {
+                                // Handle any errors (optional)
+                                console.error("Error:", error);
+                                throw error;
+                            });
+                        };
+                        
+                        
+                        
+                    //On submit
+					document.querySelector('#JellyTubeDLForm')
+                		.addEventListener('submit', function(e) {
+							e.preventDefault();
+
+							document.getElementById('JellyTube-Result').innerHTML = "<span>Loading<span>";
+							let payload = {
+								"PlaylistId": 				parseYT(getJellyTubeValueByID("JellyTube-PlaylistID")),
+								"DownloadFolder": 		getJellyTubeValueByID("JellyTube-FolderPath"),
+								"VideoResolution":		getJellyTubeValueByID("JellyTube-VideoResolution"),
+								// "FreeFormat": 	        document.getElementById("JellyTube-FreeFormat").checked,
+                                "M4A":                  document.getElementById("JellyTube-M4A").checked,
+                                "MaxDownloadCount":           document.getElementById("JellyTube-MaxDownloadCount").value
+							}
+						
+						let url = "jellytube/submit_playlist_dl";
+						url = window.ApiClient.getUrl(url);
+						// window.ApiClient.sendCustomQuery(url, payload).then(function(result) {
+						// 	var message = result["message"];
+						// 	document.getElementById('jellytube-result').innerHTML = message;
+						// });
+                        window.ApiClient.sendCustomQuery(url, payload).then(function (result) {
+                            console.log(result)
+                            // Since the backend returns a string, simply display it
+                            document.getElementById('JellyTube-Result').innerHTML = result;
+                        }).catch(function (error) {
+                            document.getElementById('JellyTube-Result').innerHTML = `<span style="color:red;">Error: ${error.message}</span>`;
+                        });
+					});
+                </script>
+                <style>
+                   
+                </style>
+			</div>
+        </div>
+    </div> 
+</div>
