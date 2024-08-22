@@ -6,6 +6,7 @@
         "description": "It is similar to FinTube but with more features and universal support(docker linux, macos, windows, ect).",
         "owner": "EnderRobber101",
         "overview": "Download YouTube videos and playlists",
+        "imageUrl": "https://raw.githubusercontent.com/EnderRobber101/JellyTube/main/Assets/logo.jpg",
         "versions": [
             {
                 "checksum": "5f3cd8a45312b07804cfbfdfe0db3eff",
