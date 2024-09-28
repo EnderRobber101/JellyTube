@@ -272,7 +272,7 @@ public class JellyTubeActivityController : ControllerBase
             }
 
             // if (FreeFormat && !m4a) { commandTemplate += " --prefer-free-formats"; }
-            commandTemplate += " --embed-thumbnail";
+            commandTemplate += " --embed-thumbnail --embed-chapters --embed-subs --sub-langs 'all' --embed-metadata --embed-info-json";
 
             if (!string.IsNullOrEmpty(DownloadFolder))
             { commandTemplate += $" --output '{DownloadFolder}/%(title)s[%(id)s].%(ext)s'"; }

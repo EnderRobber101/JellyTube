@@ -7,3 +7,18 @@ Install:
 
 Note:
 When downloading the same video again, it will be replaced by the new quality. It might not show as the higher/lower quality version even after restarting Jellyfin. In that case, try clearing your browser cache.
+
+
+
+--embed-thumbnail
+--embed-chapters
+--embed-subs
+--sub-langs "all"
+--embed-metadata
+--embed-info-json 
+
+--merge-output-format mp4 --recode-video mp4
+
+yt-dlp -f 133 --embed-thumbnail --write-description --embed-subs --embed-metadata --merge-output-format mp4 --recode-video mp4 'https://www.youtube.com/watch?v=n6B5gQXlB-0'
+
+yt-dlp "https://www.youtube.com/watch?v=KkCXLABwHP0" --embed-chapters --embed-subs --embed-info-json  --embed-metadata --merge-output-format mp4 --recode-video mp4 --format 'bestvideo[height<=720]+bestaudio' --sub-langs "all"

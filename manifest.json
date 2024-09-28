@@ -15,6 +15,14 @@
                 "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/Initial/JellyTube.zip",
                 "timestamp": "2024-08-22 10:24:58",
                 "version": "1.0.0.0"
+            },
+            {
+                "checksum": " b5e70ac3a1a1a089ae30ddd6cd3e5963",
+                "changelog": "release 2 with embedded subtitles",
+                "targetAbi": "10.9.0.0",
+                "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/release/JellyTube.zip",
+                "timestamp": "2024-09-27 10:24:58",
+                "version": "2.0.0.0"
             }
         ]
     }
