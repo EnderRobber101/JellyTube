@@ -17,7 +17,7 @@
                 "version": "1.0.0.0"
             },
             {
-                "checksum": " b5e70ac3a1a1a089ae30ddd6cd3e5963",
+                "checksum": "b5e70ac3a1a1a089ae30ddd6cd3e5963",
                 "changelog": "release 2 with embedded subtitles",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/release/JellyTube.zip",
