@@ -10,6 +10,17 @@ When downloading the same video again, it will be replaced by the new quality. I
 
 
 
+Important!!!!
+When you are updating the version, you need to go into the file system and manually delete the original/previous version before installing the new version due to some error. Sorry for the incontinence.
+
+
+
+
+
+
+
+
+
 --embed-thumbnail
 --embed-chapters
 --embed-subs
