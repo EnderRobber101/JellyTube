@@ -13,7 +13,7 @@
                 "changelog": "Initial release",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/Initial/JellyTube.zip",
-                "timestamp": "2024-08-22 10:24:58",
+                "timestamp": "2024-08-22T10:24:58",
                 "version": "1.0.0.0"
             },
             {
@@ -21,7 +21,7 @@
                 "changelog": "release 2 with embedded subtitles",
                 "targetAbi": "10.9.0.0",
                 "sourceUrl": "https://github.com/EnderRobber101/JellyTube/releases/download/release/JellyTube.zip",
-                "timestamp": "2024-09-27 10:24:58",
+                "timestamp": "2024-09-27T10:24:58",
                 "version": "2.0.0.0"
             }
         ]
